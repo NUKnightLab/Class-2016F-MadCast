@@ -1,0 +1,55 @@
+<md-content data-ng-controller="UsersController" class="users" layout-padding layout="column" flex>
+  <md-card ng-show="showForm">
+    <form id="user-add-form" name="addUserForm" layout="column">
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">Add User</span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <div ng-repeat="error in userError">
+          <div class="alert alert-danger animated fadeIn">{{error.msg}}</div>
+        </div>
+        <md-input-container data-ng-repeat="field in userSchema">
+          <label>{{field['title']}}</label>
+          <input data-ng-if="(field['type'] == 'text' || field['type'] == 'email' || field['type'] == 'password')" id="user-add-{{field['title']}}" data-ng-model="user[field['schemaKey']]" type="{{field['type']}}">
+          <md-select ng-model="user[field['schemaKey']]" data-ng-if="field['type'] == 'select'" multiple placeholder="Roles">
+            <md-option ng-repeat="option in field['options']" ng-value="option">
+              {{option}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </md-card-content>
+      <md-card-actions layout="row" layout-align="end center">
+        <md-button ng-click="add(addUserForm.$valid)" class="md-primary">Add</md-button>
+        <md-button ng-click="showForm = false; user= {}">Cancel</md-button>
+      </md-card-actions>
+    </form>
+  </md-card>
+  <div class="loader" data-ng-init="init()" data-ng-hide="users.length"></div>
+
+  <section layout="row" layout-sm="column" layout-align="start center" layout-wrap>
+    <md-button data-ng-hide="edit" data-ng-click="edit=!edit">Edit</md-button>
+    <md-button data-ng-show="edit" data-ng-click="edit=!edit" class="md-primary">Done</md-button>
+    <md-button ng-show="!showForm" ng-click="showForm=true;">Add User</md-button>
+  </section>
+
+  <table class="table table-striped table-bordered table-hover editable-table" data-ng-show="users.length">
+    <tr>
+      <th data-ng-show="edit">
+        Edit
+      </th>
+      <th data-ng-repeat="field in userSchema" data-ng-if="field.inTable">{{field.title}}</th>
+    </tr>
+    <tr data-ng-repeat="user in users">
+      <td data-ng-show="edit">
+        <md-button class="md-warn" data-ng-click="remove(user)">Delete</md-button>
+      </td>
+      <td class="table-editable-cell" data-ng-repeat="field in userSchema" data-ng-if="field.inTable">
+        <span data-ng-if="(field['type'] == 'text' || field['type'] == 'email')" class="editable-span" data-ng-editable="update(user)" data-ng-editable-model="user[field['schemaKey']]"></span>
+        <span data-ng-click="beforeSelect(field['schemaKey'], user)" data-ng-if="(field['type'] == 'select')" class="editable-span" data-ng-editable-select="update(user, field['schemaKey'])" data-ng-editable-select-model="user[field['schemaKey']]" data-ng-editable-select-options="field['options']">
+                </span>
+      </td>
+    </tr>
+  </table>
+</md-content>

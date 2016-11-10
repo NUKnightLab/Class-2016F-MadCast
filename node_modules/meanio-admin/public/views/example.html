@@ -1,0 +1,9 @@
+<md-content ng-controller="ExampleController as vm" id="admin-example-page">
+  <h3>Module settings example page</h3>
+  <md-input-container>
+    <label>App Name:</label>
+    <input ng-model="vm.app.name">
+  </md-input-container>
+  <md-divider></md-divider>
+  <md-button class="md-raised md-primary" ng-click="vm.save()">Save Changes</md-button>
+</md-content>

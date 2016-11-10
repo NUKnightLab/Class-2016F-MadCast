@@ -1,0 +1,8 @@
+{
+  "name": "circles",
+  "version": "0.1.1",
+  "mean": "0.6.0",
+  "dependencies": {
+    "users": "latest"
+  }
+}
