@@ -105,7 +105,7 @@
 	
 	  var req = __webpack_require__(29);
 	  req.keys().map(req);
-	  req = __webpack_require__(38);
+	  req = __webpack_require__(37);
 	  req.keys().map(req);
 	  angular.module('mean', packageModules);
 	}
@@ -91998,12 +91998,11 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./custom/Madcast/public/controllers/header.js": 30,
-		"./custom/Madcast/public/controllers/index.js": 31,
-		"./custom/Madcast/public/controllers/starter.js": 32,
-		"./custom/Madcast/public/index.js": 33,
-		"./custom/Madcast/public/routes/system.js": 36,
-		"./custom/Madcast/public/routes/users.js": 37
+		"./custom/Madcast/public/controllers/index.js": 30,
+		"./custom/Madcast/public/controllers/starter.js": 31,
+		"./custom/Madcast/public/index.js": 32,
+		"./custom/Madcast/public/routes/system.js": 35,
+		"./custom/Madcast/public/routes/users.js": 36
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -92025,68 +92024,125 @@
 
 	'use strict';
 	
-	angular.module('mean.system').controller('HeaderController', ['$scope', '$rootScope', 'Menus', 'MeanUser', '$state', function ($scope, $rootScope, Menus, MeanUser, $state) {
-	  var vm = this;
+	angular.module('MyApp', ['ngMaterial', 'ngMessages', 'material.svgAssetsCache']).controller('DemoCtrl', DemoCtrl);
 	
-	  vm.menus = {};
-	  vm.hdrvars = {
-	    authenticated: MeanUser.loggedin,
-	    user: MeanUser.user,
-	    isAdmin: MeanUser.isAdmin
-	  };
+	function DemoCtrl($timeout, $q, $log) {
+	  var self = this;
 	
-	  // Default hard coded menu items for main menu
-	  var defaultMainMenu = [];
+	  self.simulateQuery = false;
+	  self.isDisabled = false;
 	
-	  // Query menus added by modules. Only returns menus that user is allowed to see.
-	  function queryMenu(name, defaultMenu) {
-	    Menus.query({
-	      name: name,
-	      defaultMenu: defaultMenu
-	    }, function (menu) {
-	      vm.menus[name] = menu;
+	  // list of `state` value/display objects
+	  self.states = loadAll();
+	  self.querySearch = querySearch;
+	  self.selectedItemChange = selectedItemChange;
+	  self.searchTextChange = searchTextChange;
+	
+	  self.newState = newState;
+	
+	  function newState(state) {
+	    alert("Sorry! You'll need to create a Constitution for " + state + " first!");
+	  }
+	
+	  // ******************************
+	  // Internal methods
+	  // ******************************
+	
+	  /**
+	   * Search for states... use $timeout to simulate
+	   * remote dataservice call.
+	   */
+	  function querySearch(query) {
+	    var results = query ? self.states.filter(createFilterFor(query)) : self.states,
+	        deferred;
+	    if (self.simulateQuery) {
+	      deferred = $q.defer();
+	      $timeout(function () {
+	        deferred.resolve(results);
+	      }, Math.random() * 1000, false);
+	      return deferred.promise;
+	    } else {
+	      return results;
+	    }
+	  }
+	
+	  function searchTextChange(text) {
+	    $log.info('Text changed to ' + text);
+	  }
+	
+	  function selectedItemChange(item) {
+	    $log.info('Item changed to ' + JSON.stringify(item));
+	  }
+	
+	  /**
+	   * Build `states` list of key/value pairs
+	   */
+	  function loadAll() {
+	    var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
+	                  Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
+	                  Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
+	                  Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
+	                  North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
+	                  South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
+	                  Wisconsin, Wyoming';
+	
+	    return allStates.split(/, +/g).map(function (state) {
+	      return {
+	        value: state.toLowerCase(),
+	        display: state
+	      };
 	    });
 	  }
 	
-	  // Query server for menus and check permissions
-	  queryMenu('main', defaultMainMenu);
-	  queryMenu('account', []);
+	  /**
+	   * Create filter function for a query string
+	   */
+	  function createFilterFor(query) {
+	    var lowercaseQuery = angular.lowercase(query);
 	
-	  $scope.isCollapsed = false;
-	
-	  $rootScope.$on('loggedin', function () {
-	    queryMenu('main', defaultMainMenu);
-	
-	    vm.hdrvars = {
-	      authenticated: MeanUser.loggedin,
-	      user: MeanUser.user,
-	      isAdmin: MeanUser.isAdmin
+	    return function filterFn(state) {
+	      return state.value.indexOf(lowercaseQuery) === 0;
 	    };
-	  });
+	  }
+	}
 	
-	  vm.logout = function () {
-	    MeanUser.logout();
+	/**
+	Copyright 2016 Google Inc. All Rights Reserved.
+	Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
+	**/
+	
+	angular.module('mean.system').controller('Controlla', ['$scope', function ($scope) {
+	  $scope.master = {};
+	
+	  $scope.update = function (user) {
+	    $scope.master = angular.copy(user);
+	    if ($scope.user.feeling == "cheerful") {
+	      console.log("You are a Hang Out Homie");
+	    };
+	    if ($scope.user.feeling == "funny") {
+	      console.log("You are Jovial Jokester");
+	    };
+	    if ($scope.user.feeling == "informative") {
+	      console.log("You're a Curious Cat!");
+	    };
+	    if ($scope.user.feeling == "somber") {
+	      console.log("You are a Mopey Muppet");
+	    };
+	    if ($scope.user.feeling == "serious") {
+	      console.log("You are a News Nerd!");
+	    };
 	  };
 	
-	  $rootScope.$on('logout', function () {
-	    vm.hdrvars = {
-	      authenticated: false,
-	      user: {},
-	      isAdmin: false
-	    };
-	    queryMenu('main', defaultMainMenu);
-	    $state.go('home');
-	  });
+	  $scope.reset = function () {
+	    $scope.user = angular.copy($scope.master);
+	  };
+	
+	  $scope.reset();
 	}]);
-
-/***/ },
-/* 31 */
-/***/ function(module, exports) {
-
-	'use strict';
 	
 	angular.module('mean.system').controller('IndexController', ['$scope', 'Global', function ($scope, Global) {
 	  $scope.global = Global;
+	
 	  $scope.sites = [{
 	    'name': 'makeapoint',
 	    'text': 'Makeapoint is a platform to craft and fine-tune ideas and messages providing a graphical experience which brough an offline methodlogy online',
@@ -92176,7 +92232,7 @@
 	}]);
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -92198,21 +92254,21 @@
 	})();
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	__webpack_require__(34);
+	__webpack_require__(33);
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(35);
+	var content = __webpack_require__(34);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -92232,7 +92288,7 @@
 	}
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -92240,13 +92296,13 @@
 	
 	
 	// module
-	exports.push([module.id, ".MEAN-Logo {\n  height: 80%\n}\n", ""]);
+	exports.push([module.id, ".MEAN-Logo {\n  height: 80%\n}\n\nbody {\n  background-color: white\n}\n\n* {\n  text-align: center;\n}\n\nh1 {\n  font-size: 350%;\n  color: #c0392b;\n}\n\np {\n  font-size: 120%;\n}\n\ninput[type=\"text\"] {\n  padding: 10px;\n  border: none;\n  border-bottom: solid 2px #c9c9c9;\n  transition: border 0.3s;\n}\n\n#story {\n  margin-left: 12.5%;\n  width: 75%;\n}\n", ""]);
 	
 	// exports
 
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -92270,7 +92326,7 @@
 	}]);
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -92319,37 +92375,37 @@
 	}]);
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./meanio-admin/public/controllers/admin.js": 39,
-		"./meanio-admin/public/controllers/example.js": 40,
-		"./meanio-admin/public/controllers/modules.js": 41,
-		"./meanio-admin/public/controllers/settings.js": 42,
-		"./meanio-admin/public/controllers/themes.js": 43,
-		"./meanio-admin/public/controllers/users.js": 44,
-		"./meanio-admin/public/directives/editable.js": 45,
-		"./meanio-admin/public/index.js": 46,
-		"./meanio-admin/public/routes/admin.js": 51,
-		"./meanio-admin/public/services/module-settings.js": 52,
-		"./meanio-admin/public/services/modules.js": 53,
-		"./meanio-admin/public/services/settings.js": 54,
-		"./meanio-admin/public/services/users.js": 55,
-		"./meanio-circles/public/controllers/circles.js": 56,
-		"./meanio-circles/public/index.js": 57,
-		"./meanio-circles/public/routes/circles.js": 60,
-		"./meanio-circles/public/services/circles.js": 61,
-		"./meanio-system/public/routes/system.js": 62,
-		"./meanio-system/public/services/config.js": 63,
-		"./meanio-system/public/services/global.js": 64,
-		"./meanio-system/public/services/interceptor.js": 65,
-		"./meanio-system/public/services/menus.js": 66,
-		"./meanio-system/public/system.js": 67,
-		"./meanio-users/public/controllers/meanUser.js": 68,
-		"./meanio-users/public/index.js": 69,
-		"./meanio-users/public/routes/auth.js": 72,
-		"./meanio-users/public/services/meanUser.js": 73
+		"./meanio-admin/public/controllers/admin.js": 38,
+		"./meanio-admin/public/controllers/example.js": 39,
+		"./meanio-admin/public/controllers/modules.js": 40,
+		"./meanio-admin/public/controllers/settings.js": 41,
+		"./meanio-admin/public/controllers/themes.js": 42,
+		"./meanio-admin/public/controllers/users.js": 43,
+		"./meanio-admin/public/directives/editable.js": 44,
+		"./meanio-admin/public/index.js": 45,
+		"./meanio-admin/public/routes/admin.js": 50,
+		"./meanio-admin/public/services/module-settings.js": 51,
+		"./meanio-admin/public/services/modules.js": 52,
+		"./meanio-admin/public/services/settings.js": 53,
+		"./meanio-admin/public/services/users.js": 54,
+		"./meanio-circles/public/controllers/circles.js": 55,
+		"./meanio-circles/public/index.js": 56,
+		"./meanio-circles/public/routes/circles.js": 59,
+		"./meanio-circles/public/services/circles.js": 60,
+		"./meanio-system/public/routes/system.js": 61,
+		"./meanio-system/public/services/config.js": 62,
+		"./meanio-system/public/services/global.js": 63,
+		"./meanio-system/public/services/interceptor.js": 64,
+		"./meanio-system/public/services/menus.js": 65,
+		"./meanio-system/public/system.js": 66,
+		"./meanio-users/public/controllers/meanUser.js": 67,
+		"./meanio-users/public/index.js": 68,
+		"./meanio-users/public/routes/auth.js": 71,
+		"./meanio-users/public/services/meanUser.js": 72
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -92362,11 +92418,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 38;
+	webpackContext.id = 37;
 
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -92412,7 +92468,7 @@
 
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -92442,7 +92498,7 @@
 
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -92466,7 +92522,7 @@
 
 
 /***/ },
-/* 42 */
+/* 41 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -92563,7 +92619,7 @@
 
 
 /***/ },
-/* 43 */
+/* 42 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -92611,7 +92667,7 @@
 
 
 /***/ },
-/* 44 */
+/* 43 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -92717,7 +92773,7 @@
 
 
 /***/ },
-/* 45 */
+/* 44 */
 /***/ function(module, exports) {
 
 	angular.module('mean.admin').directive('ngEnter', function () {
@@ -92801,24 +92857,24 @@
 
 
 /***/ },
-/* 46 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	__webpack_require__(47)
-	window.ZeroClipboard = __webpack_require__(49)
-	__webpack_require__(50)
+	__webpack_require__(46)
+	window.ZeroClipboard = __webpack_require__(48)
+	__webpack_require__(49)
 
 
 /***/ },
-/* 47 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(48);
+	var content = __webpack_require__(47);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -92838,7 +92894,7 @@
 	}
 
 /***/ },
-/* 48 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -92852,7 +92908,7 @@
 
 
 /***/ },
-/* 49 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -95438,14 +95494,14 @@
 	}());
 
 /***/ },
-/* 50 */
+/* 49 */
 /***/ function(module, exports) {
 
 	/*! ng-clip 16-12-2014 */
 	!function(a,b){"use strict";b.module("ngClipboard",[]).provider("ngClip",function(){var a=this;return this.path="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.1.6/ZeroClipboard.swf",{setPath:function(b){a.path=b},setConfig:function(b){a.config=b},$get:function(){return{path:a.path,config:a.config}}}}).run(["ngClip",function(a){var c={swfPath:a.path,trustedDomains:["*"],allowScriptAccess:"always",forceHandCursor:!0};ZeroClipboard.config(b.extend(c,a.config||{}))}]).directive("clipCopy",["ngClip",function(){return{scope:{clipCopy:"&",clipClick:"&",clipClickFallback:"&"},restrict:"A",link:function(a,c,d){if(ZeroClipboard.isFlashUnusable())return void c.bind("click",function(b){a.$apply(a.clipClickFallback({$event:b,copy:a.$eval(a.clipCopy)}))});var e=new ZeroClipboard(c);""===d.clipCopy&&(a.clipCopy=function(){return c[0].previousElementSibling.innerText}),e.on("ready",function(){e.on("copy",function(b){var c=b.clipboardData;c.setData(d.clipCopyMimeType||"text/plain",a.$eval(a.clipCopy))}),e.on("aftercopy",function(){b.isDefined(d.clipClick)&&a.$apply(a.clipClick)}),a.$on("$destroy",function(){e.destroy()})})}}}])}(window,window.angular);
 
 /***/ },
-/* 51 */
+/* 50 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -95492,7 +95548,7 @@
 
 
 /***/ },
-/* 52 */
+/* 51 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -95538,7 +95594,7 @@
 
 
 /***/ },
-/* 53 */
+/* 52 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -95557,7 +95613,7 @@
 
 
 /***/ },
-/* 54 */
+/* 53 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -95593,7 +95649,7 @@
 
 
 /***/ },
-/* 55 */
+/* 54 */
 /***/ function(module, exports) {
 
 	// Users service used for users REST endpoint
@@ -95611,7 +95667,7 @@
 
 
 /***/ },
-/* 56 */
+/* 55 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -95646,22 +95702,22 @@
 
 
 /***/ },
-/* 57 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	__webpack_require__(58)
+	__webpack_require__(57)
 
 
 /***/ },
-/* 58 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(59);
+	var content = __webpack_require__(58);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(4)(content, {});
@@ -95681,7 +95737,7 @@
 	}
 
 /***/ },
-/* 59 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(3)();
@@ -95695,7 +95751,7 @@
 
 
 /***/ },
-/* 60 */
+/* 59 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -95749,7 +95805,7 @@
 
 
 /***/ },
-/* 61 */
+/* 60 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -95779,7 +95835,7 @@
 
 
 /***/ },
-/* 62 */
+/* 61 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -95832,7 +95888,7 @@
 
 
 /***/ },
-/* 63 */
+/* 62 */
 /***/ function(module, exports) {
 
 	angular.module('mean.system').provider('$meanConfig', [function() {
@@ -95861,7 +95917,7 @@
 
 
 /***/ },
-/* 64 */
+/* 63 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -95985,7 +96041,7 @@
 
 
 /***/ },
-/* 65 */
+/* 64 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -96023,7 +96079,7 @@
 
 
 /***/ },
-/* 66 */
+/* 65 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -96039,7 +96095,7 @@
 
 
 /***/ },
-/* 67 */
+/* 66 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -96060,7 +96116,7 @@
 
 
 /***/ },
-/* 68 */
+/* 67 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -96178,24 +96234,24 @@
 	  ]);
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	__webpack_require__(70);
+	__webpack_require__(69);
 
 /***/ },
-/* 70 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(71);
+	__webpack_require__(70);
 	module.exports = 'angular-jwt';
 	
 
 
 /***/ },
-/* 71 */
+/* 70 */
 /***/ function(module, exports) {
 
 	(function() {
@@ -96236,6 +96292,13 @@
 	          return $injector.invoke(redirector, config, {});
 	        } else {
 	          throw new Error('unauthenticatedRedirector must be a function');
+	        }
+	      }
+	
+	      function isAuthenticated() {
+	        var token = invokeToken(config.tokenGetter);
+	        if (token) {
+	          return !jwtHelper.isTokenExpired(token);
 	        }
 	      }
 	
@@ -96294,7 +96357,8 @@
 	        getToken: function(){ return invokeToken(config.tokenGetter); },
 	        redirect: function() { return invokeRedirector(config.unauthenticatedRedirector); },
 	        checkAuthOnRefresh: checkAuthOnRefresh,
-	        redirectWhenUnauthenticated: redirectWhenUnauthenticated
+	        redirectWhenUnauthenticated: redirectWhenUnauthenticated,
+	        isAuthenticated: isAuthenticated
 	      }
 	    }]
 	  });
@@ -96584,7 +96648,7 @@
 	}());
 
 /***/ },
-/* 72 */
+/* 71 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -96603,7 +96667,7 @@
 
 
 /***/ },
-/* 73 */
+/* 72 */
 /***/ function(module, exports) {
 
 	'use strict';

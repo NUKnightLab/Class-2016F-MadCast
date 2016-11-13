@@ -1,3 +1,32 @@
 .MEAN-Logo {
   height: 80%
 }
+
+body {
+  background-color: white
+}
+
+* {
+  text-align: center;
+}
+
+h1 {
+  font-size: 350%;
+  color: #c0392b;
+}
+
+p {
+  font-size: 120%;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border: none;
+  border-bottom: solid 2px #c9c9c9;
+  transition: border 0.3s;
+}
+
+#story {
+  margin-left: 12.5%;
+  width: 75%;
+}

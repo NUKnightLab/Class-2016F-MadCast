@@ -39,6 +39,13 @@ angular.module('angular-jwt.authManager', [])
         }
       }
 
+      function isAuthenticated() {
+        var token = invokeToken(config.tokenGetter);
+        if (token) {
+          return !jwtHelper.isTokenExpired(token);
+        }
+      }
+
       $rootScope.isAuthenticated = false;
 
       function authenticate() {
@@ -94,7 +101,8 @@ angular.module('angular-jwt.authManager', [])
         getToken: function(){ return invokeToken(config.tokenGetter); },
         redirect: function() { return invokeRedirector(config.unauthenticatedRedirector); },
         checkAuthOnRefresh: checkAuthOnRefresh,
-        redirectWhenUnauthenticated: redirectWhenUnauthenticated
+        redirectWhenUnauthenticated: redirectWhenUnauthenticated,
+        isAuthenticated: isAuthenticated
       }
     }]
   });
