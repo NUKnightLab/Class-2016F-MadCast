@@ -1,9 +1,11 @@
-.MEAN-Logo {
-  height: 80%
+@font-face {
+    font-family: hbold;
+    src: url(../fonts/helvetica-neue-bold.ttf);
 }
 
-body {
-  background-color: white
+
+.MEAN-Logo {
+  height: 80%
 }
 
 * {
@@ -12,7 +14,17 @@ body {
 
 h1 {
   font-size: 350%;
+  font-family: hbold;
   color: #c0392b;
+}
+
+a {
+  text-decoration: none;
+  color: red;
+}
+
+a:hover {
+  color: black;
 }
 
 p {
