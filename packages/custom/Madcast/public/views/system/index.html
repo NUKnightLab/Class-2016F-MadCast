@@ -13,16 +13,31 @@
       <md-card>
               <div ng-controller="Controlla">
                 <div id = "story">
-                <h4> I love listening to this podcast called
-                  <h4> <md-autocomplete  required="" md-input-name="autocompleteField" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite state">
-</h4>
-                     because whenever I'm
-                  <h4> <md-autocomplete  required="" md-input-name="autocompleteField" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Activity">
-</h4>
-                     it makes me feel
-                  <input type  = "text" placeholder = "Enlightened" ng-model = "user.feeling">
 
-                    It can really brighten my day!
+                  <!-- <h4> Little Jim is an active little guy. Although Little Jim likes doing most things, his favorite is </h4>
+                  <md-autocomplete  required="" ng-model = "user.Activity" md-input-name="autocompleteField2" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem"  md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Activity">
+                  <h4> by far.  Yesterday when Little Jim was listening to his favorite podcast </h4>
+
+                  <md-autocomplete  required="" ng-model = "user.Podcast" md-input-name="autocompleteField" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Podcast">
+                   his younger sister, Small Sally, made sure to disturb him by asking him too many questions. What was even more annoying, was that Small Sally was asking all these questions as  Little Jim was doing his favorite thing
+                   <md-autocomplete  required="" ng-model = "user.Activity" md-input-name="autocompleteField2" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem"  md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Activity">
+                    while listening to his favorite
+                    <md-autocomplete  required="" ng-model = "user.Podcast" md-input-name="autocompleteField" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Podcast">
+</h4>
+
+-->
+
+
+                <h4> Little Jim is an active little guy. Although Little Jim likes doing most things, his favorite is
+                  <h4> <md-autocomplete  required="" ng-model = "user.Activity" md-input-name="autocompleteField" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Activity">
+</h4>
+                     by far.  Yesterday when Little Jim was listening to his favorite podcast
+                  <h4> <md-autocomplete  required="" ng-model = "user.Podcast" md-input-name="autocompleteField2" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem"  md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Podcast">
+</h4>
+his younger sister, Small Sally, made sure to disturb him by asking him too many questions. What was even more annoying, was that Small Sally was asking all these questions as  Little Jim was doing his favorite thing
+
+<h4> <md-autocomplete  required="" ng-model = "user.Feeling" md-input-name="autocompleteField2" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem"  md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Feeling">
+</h4>
 
                     <br> <br>
                   <input type = "submit" ng-click = "update(user)">
