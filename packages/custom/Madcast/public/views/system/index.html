@@ -1,57 +1,31 @@
-
-
-
 <div layout="column" flex data-ng-controller="IndexController">
   <md-content layout="column" layout-padding flex>
 
-    <!-- <p class="md-subhead">
-      WE LIT
-    </p -->
-
-    <h1> Hey, welcome to Madcast! </h1>
-
-      <md-card>
-              <div ng-controller="Controlla">
-                <div id = "story">
-
-                  <!-- <h4> Little Jim is an active little guy. Although Little Jim likes doing most things, his favorite is </h4>
-                  <md-autocomplete  required="" ng-model = "user.Activity" md-input-name="autocompleteField2" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem"  md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Activity">
-                  <h4> by far.  Yesterday when Little Jim was listening to his favorite podcast </h4>
-
-                  <md-autocomplete  required="" ng-model = "user.Podcast" md-input-name="autocompleteField" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Podcast">
-                   his younger sister, Small Sally, made sure to disturb him by asking him too many questions. What was even more annoying, was that Small Sally was asking all these questions as  Little Jim was doing his favorite thing
-                   <md-autocomplete  required="" ng-model = "user.Activity" md-input-name="autocompleteField2" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem"  md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Activity">
-                    while listening to his favorite
-                    <md-autocomplete  required="" ng-model = "user.Podcast" md-input-name="autocompleteField" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Podcast">
-</h4>
-
--->
+    <div id = "firstSec">
+      <h2> Wanna know what <br> kind of podcast listener <br> you are? </h2>
+      <h1> Let's find out </h1>
+    </div>
 
 
-                <h4> Little Jim is an active little guy. Although Little Jim likes doing most things, his favorite is
-                  <h4> <md-autocomplete  required="" ng-model = "user.Activity" md-input-name="autocompleteField" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text="ctrl.searchText" md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Activity">
-</h4>
-                     by far.  Yesterday when Little Jim was listening to his favorite podcast
-                  <h4> <md-autocomplete  required="" ng-model = "user.Podcast" md-input-name="autocompleteField2" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem"  md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Favorite Podcast">
-</h4>
-his younger sister, Small Sally, made sure to disturb him by asking him too many questions. What was even more annoying, was that Small Sally was asking all these questions as  Little Jim was doing his favorite thing
+    <div id = "secondSec">
 
-<h4> <md-autocomplete  required="" ng-model = "user.Feeling" md-input-name="autocompleteField2" md-input-minlength="2" md-input-maxlength="18" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem"  md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Feeling">
-</h4>
+      <h1> So tell me... </h1>
+      <div id = "response">
+      <h3> I listen to <input type = "text" placeholder="Podcast">. I like how it is <input type = "text" placeholder="Tonal Adjective">.
+        I usually am <input type = "text" placeholder="Activity"> when I am listening to <input type = "text" placeholder="Same podcast"> </h3>
+      </div>
 
-                    <br> <br>
-                  <input type = "submit" ng-click = "update(user)">
-               </h4>
-             </div>
-              </div>
-    </md-card>
+      <div ng-controller="ExampleController">
+	       <div>
+        	 <p ng-bind-html="myHTML"></p>
+	        </div>
+      </div>
 
-
-<!--
-Copyright 2016 Google Inc. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
--->
+        <a href = "#thirdSec"> <input type = "submit" value = "This is me!"> </a>
+    </div>
 
 
-  </md-content>
-</div>
+    <div id = "thirdSec">
+
+      
+    </div>

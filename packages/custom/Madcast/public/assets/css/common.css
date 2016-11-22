@@ -1,34 +1,19 @@
-@font-face {
-    font-family: hbold;
-    src: url(../fonts/helvetica-neue-bold.ttf);
-}
-
-
-.MEAN-Logo {
-  height: 80%
-}
-
-* {
-  text-align: center;
+#firstSec {
+  height: 100vh;
 }
 
 h1 {
-  font-size: 350%;
-  font-family: hbold;
   color: #c0392b;
 }
 
-a {
-  text-decoration: none;
-  color: red;
+#secondSec {
+  height: 100vh;
+  margin-top: 5vh;
+  color: #2980b9;
 }
 
-a:hover {
-  color: black;
-}
-
-p {
-  font-size: 120%;
+#response {
+  text-align: center;
 }
 
 input[type="text"] {
@@ -38,7 +23,11 @@ input[type="text"] {
   transition: border 0.3s;
 }
 
-#story {
-  margin-left: 12.5%;
-  width: 75%;
+input[type="submit"] {
+  color: #6496c8;
+  background: rgba(0,0,0,0);
+  border: solid 5px #6496c8;
+  margin-left: 35%;
+  width: 30%;
+
 }
