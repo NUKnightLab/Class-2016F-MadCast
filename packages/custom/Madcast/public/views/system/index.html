@@ -7,12 +7,12 @@
     </div>
 
 
-    <div id = "secondSec">
+    <div id = "secondSec" ng-controller = "Controlla">
 
       <h1> So tell me... </h1>
       <div id = "response">
-      <h3> I listen to <input type = "text" placeholder="Podcast">. I like how it is <input type = "text" placeholder="Tonal Adjective">.
-        I usually am <input type = "text" placeholder="Activity"> when I am listening to <input type = "text" placeholder="Same podcast"> </h3>
+      <h3> I listen to <input type = "text" ng-model="user.Poddy" placeholder="Podcast">. I like how it is <input type = "text" ng-model = "user.feeling" placeholder="Tonal Adjective">.
+        I usually am <input type = "text" ng-model="user.Activity" placeholder="Activity"> when I am listening to <input type = "text" placeholder="Same podcast"> </h3>
       </div>
 
       <div ng-controller="ExampleController">
@@ -27,5 +27,5 @@
 
     <div id = "thirdSec">
 
-      
+
     </div>
