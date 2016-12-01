@@ -14,13 +14,14 @@
  * Module dependencies.
  */
 
-var fs = require('fs')
-  , path = require('path')
-  , join = path.join
-  , resolve = path.resolve
-  , extname = path.extname
-  , Promise = require('bluebird')
-  , dirname = path.dirname;
+var fs = require('fs');
+var path = require('path');
+var Promise = require('bluebird');
+
+var join = path.join;
+var resolve = path.resolve;
+var extname = path.extname;
+var dirname = path.dirname;
 
 var readCache = {};
 
@@ -365,8 +366,8 @@ exports.dust.render = function(str, options, fn){
       }
     }
 
-    var ext = 'dust'
-      , views = '.';
+    var ext = 'dust';
+    var views = '.';
 
     if (options) {
       if (options.ext) ext = options.ext;
@@ -856,9 +857,9 @@ exports.qejs.render = function (str, options, fn) {
     try {
       var engine = requires.qejs || (requires.qejs = require('qejs'));
       engine.render(str, options).then(function (result) {
-          fn(null, result);
+        fn(null, result);
       }, function (err) {
-          fn(err);
+        fn(err);
       }).done();
     } catch (err) {
       fn(err);
@@ -1032,7 +1033,29 @@ exports.dot.render = function (str, options, fn) {
       fn(null, tmpl(options));
     } catch (err) {
       fn(err);
-      }
+    }
+  });
+};
+
+/**
+ * bracket support.
+ */
+
+exports.bracket = fromStringRenderer('bracket');
+
+/**
+ * bracket string support.
+ */
+
+exports.bracket.render = function (str, options, fn) {
+  return promisify(fn, function (fn) {
+    var engine = requires.bracket || (requires.bracket = require('bracket-template'));
+    try {
+      var tmpl = cache(options) || cache(options, engine.default.compile(str));
+      fn(null, tmpl(options));
+    } catch (err) {
+      fn(err);
+    }
   });
 };
 
@@ -1064,8 +1087,8 @@ exports.ractive.render = function(str, options, fn){
       var i, length;
       var properties = ["template", "filename", "cache", "partials"];
       for (i = 0, length = properties.length; i < length; i++) {
-       var property = properties[i];
-       delete options.data[property];
+        var property = properties[i];
+        delete options.data[property];
       }
     }
 
@@ -1087,12 +1110,38 @@ exports.nunjucks = fromStringRenderer('nunjucks');
  * Nunjucks string support.
  */
 
-exports.nunjucks.render = function(str, options, fn) {
+exports.nunjucks.render = function (str, options, fn) {
   return promisify(fn, function (fn) {
-    try {
-      var engine = requires.nunjucks || (requires.nunjucks = require('nunjucks'));
-      if (options.settings && options.settings.views) engine.configure(options.settings.views);
 
+    try {
+
+      var engine = options.nunjucksEnv || requires.nunjucks || (requires.nunjucks = require('nunjucks'));
+
+      var env = engine;
+
+      // deprecated fallback support for express
+      // <https://github.com/tj/consolidate.js/pull/152>
+      // <https://github.com/tj/consolidate.js/pull/224>
+      if (options.settings && options.settings.views)
+        env = engine.configure(options.settings.views);
+      else if (options.nunjucks && options.nunjucks.configure)
+        env = engine.configure.apply(engine, options.nunjucks.configure);
+
+      //
+      // because `renderString` does not initiate loaders
+      // we must manually create a loader for it based off
+      // either `options.settings.views` or `options.nunjucks` or `options.nunjucks.root`
+      //
+      // <https://github.com/mozilla/nunjucks/issues/730>
+      // <https://github.com/crocodilejs/node-email-templates/issues/182>
+      //
+
+      //
+      // note that the below code didn't work nor make sense before
+      // because loaders should take different options from rendering
+      //
+
+      /*
       var loader = options.loader;
       if (loader) {
         var env = new engine.Environment(new loader(options));
@@ -1100,6 +1149,30 @@ exports.nunjucks.render = function(str, options, fn) {
       } else {
         engine.renderString(str, options, fn);
       }
+      */
+
+      // so instead we simply check if we passed a custom loader
+      // otherwise we create a simple file based loader
+      if (options.loader) {
+        env = new engine.Environment(options.loader);
+      } else if (options.settings && options.settings.views) {
+        env = new engine.Environment(
+          new engine.FileSystemLoader(options.settings.views)
+        );
+      } else if (options.nunjucks && options.nunjucks.loader) {
+        if (typeof options.nunjucks.loader === 'string')
+          env = new engine.Environment(new engine.FileSystemLoader(options.nunjucks.loader));
+        else
+          env = new engine.Environment(
+            new engine.FileSystemLoader(
+              options.nunjucks.loader[0],
+              options.nunjucks.loader[1]
+            )
+          );
+      }
+
+      env.renderString(str, options, fn);
+
     } catch (err) {
       throw fn(err);
     }
@@ -1134,10 +1207,9 @@ exports.htmling.render = function(str, options, fn) {
  *  Rendering function
  */
 function requireReact(module, filename) {
-  var tools = requires.reactTools || (requires.reactTools = require('react-tools'));
+  var babel = requires.babel || (requires.babel = require('babel-core'));
 
-  var content = fs.readFileSync(filename, 'utf8');
-  var compiled = tools.transform(content, {harmony: true});
+  var compiled = babel.transformFileSync(filename, { presets: [ 'react' ] }).code
 
   return module._compile(compiled, filename);
 }
@@ -1149,15 +1221,18 @@ exports.requireReact = requireReact;
  *  Converting a string into a node module.
  */
 function requireReactString(src, filename) {
-  var tools = requires.reactTools || (requires.reactTools = require('react-tools'));
+  var babel = requires.babel || (requires.babel = require('babel-core'));
+
+  if (!filename) filename = '';
   var m = new module.constructor();
+  filename = filename || '';
 
   // Compile Using React
-  src = tools.transform(src, {harmony: true});
+  var compiled = babel.transform(src, { presets: [ 'react' ] }).code;
 
   // Compile as a module
   m.paths = module.paths;
-  m._compile(src, filename);
+  m._compile(compiled, filename);
 
   return m.exports;
 }
@@ -1167,14 +1242,15 @@ function requireReactString(src, filename) {
  * A naive helper to replace {{tags}} with options.tags content
  */
 function reactBaseTmpl(data, options){
-  var exp,
-      regex;
+
+  var exp;
+  var regex;
 
   // Iterates through the keys in file object
   // and interpolate / replace {{key}} with it's value
   for (var k in options){
     if (options.hasOwnProperty(k)){
-      exp = '{{'+k+'}}';
+      exp = '{{' + k + '}}';
       regex = new RegExp(exp, 'g');
       if (data.match(regex)) {
         data = data.replace(regex, options[k]);
@@ -1191,27 +1267,28 @@ function reactBaseTmpl(data, options){
  *  The main render parser for React bsaed templates
  */
 function reactRenderer(type){
-  
+
   if (require.extensions) {
-  
+
     // Ensure JSX is transformed on require
     if (!require.extensions['.jsx']) {
       require.extensions['.jsx'] = requireReact;
     }
-  
+
     // Supporting .react extension as well as test cases
     // Using .react extension is not recommended.
     if (!require.extensions['.react']) {
       require.extensions['.react'] = requireReact;
     }
-    
+
   }
 
   // Return rendering fx
   return function(str, options, fn) {
     return promisify(fn, function(fn) {
       // React Import
-      var engine = requires.react || (requires.react = require('react'));
+      var ReactDOM = requires.ReactDOM || (requires.ReactDOM = require('react-dom/server'));
+      var react = requires.react || (requires.react = require('react'));
 
       // Assign HTML Base
       var base = options.base;
@@ -1226,24 +1303,24 @@ function reactRenderer(type){
       // Start Conversion
       try {
 
-        var Code,
-            Factory;
+        var Code;
+        var Factory;
 
-        var baseStr,
-            content,
-            parsed;
+        var baseStr;
+        var content;
+        var parsed;
 
         if (!cache(options)){
           // Parsing
           Code = (type === 'path') ? require(resolve(str)) : requireReactString(str);
-          Factory = cache(options, engine.createFactory(Code));
+          Factory = cache(options, react.createFactory(Code));
 
         } else {
           Factory = cache(options);
         }
 
         parsed = new Factory(options);
-        content = (isNonStatic) ? engine.renderToString(parsed) : engine.renderToStaticMarkup(parsed);
+        content = (isNonStatic) ? ReactDOM.renderToString(parsed) : ReactDOM.renderToStaticMarkup(parsed);
 
         if (base){
           baseStr = readCache[str] || fs.readFileSync(resolve(base), 'utf8');
@@ -1276,6 +1353,40 @@ exports.react = reactRenderer('path');
  */
 exports.react.render = reactRenderer('string');
 
+/**
+ * ARC-templates support.
+ */
+
+exports['arc-templates'] = fromStringRenderer('arc-templates');
+
+/**
+ * ARC-templates string support.
+ */
+
+exports['arc-templates'].render = function(str, options, fn) {
+  var readFileWithOptions = Promise.promisify(read);
+  var consolidateFileSystem = {};
+  consolidateFileSystem.readFile = function (path) {
+    return readFileWithOptions(path, options);
+  };
+
+  return promisify(fn, function (fn) {
+    try {
+      var engine = requires['arc-templates'];
+      if (!engine) {
+        var Engine = require('arc-templates/dist/es5');
+        engine = requires['arc-templates'] = new Engine({ filesystem: consolidateFileSystem });
+      }
+
+      var compiler = cache(options) || cache(options, engine.compileString(str, options.filename));
+      compiler.then(function (func) { return func(options); })
+          .then(function (result) { fn(null, result.content); })
+          .catch(fn);
+    } catch (err) {
+      fn(err);
+    }
+  });
+};
 
 /**
  * Vash support
@@ -1286,27 +1397,25 @@ exports.vash = fromStringRenderer('vash');
  * Vash string support
  */
 exports.vash.render = function(str, options, fn) {
-    return promisify(fn, function(fn) {
-        var engine = requires.vash || (requires.vash = require('vash'));
+  return promisify(fn, function(fn) {
+    var engine = requires.vash || (requires.vash = require('vash'));
 
-        try {
-            // helper system : https://github.com/kirbysayshi/vash#helper-system
-            if (options.helpers) {
-                for (var key in options.helpers) {
-                    if (!options.helpers.hasOwnProperty(key) || typeof options.helpers[key] !== 'function') {
-                        continue;
-                    }
-
-                    engine.helpers[key] = options.helpers[key];
-                }
-            }
-
-            var tmpl = cache(options) || cache(options, engine.compile(str, options));
-            fn(null, tmpl(options).replace(/\n$/, ''));
-        } catch (err) {
-            fn(err);
+    try {
+      // helper system : https://github.com/kirbysayshi/vash#helper-system
+      if (options.helpers) {
+        for (var key in options.helpers) {
+          if (!options.helpers.hasOwnProperty(key) || typeof options.helpers[key] !== 'function') {
+            continue;
+          }
+          engine.helpers[key] = options.helpers[key];
         }
-    });
+      }
+      var tmpl = cache(options) || cache(options, engine.compile(str, options));
+      fn(null, tmpl(options).replace(/\n$/, ''));
+    } catch (err) {
+      fn(err);
+    }
+  });
 };
 
 /**
@@ -1326,6 +1435,42 @@ exports.slm.render = function(str, options, fn) {
     try {
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
       fn(null, tmpl(options));
+    } catch (err) {
+      fn(err);
+    }
+  });
+};
+
+/**
+ * Marko support.
+ */
+
+exports.marko = function(path, options, fn){
+  return promisify(fn, function (fn) {
+    var engine = requires.marko || (requires.marko = require('marko'));
+    options.writeToDisk = !!options.cache;
+
+    try {
+      var tmpl = cache(options) || cache(options, engine.load(path, options));
+      tmpl.render(options, fn)
+    } catch (err) {
+      fn(err);
+    }
+  });
+};
+
+/**
+ * Marko string support.
+ */
+
+exports.marko.render = function(str, options, fn) {
+  return promisify(fn, function (fn) {
+    var engine = requires.marko || (requires.marko = require('marko'));
+    options.writeToDisk = !!options.cache;
+
+    try {
+      var tmpl = cache(options) || cache(options, engine.load('string.marko', str, options));
+      tmpl.render(options, fn)
     } catch (err) {
       fn(err);
     }

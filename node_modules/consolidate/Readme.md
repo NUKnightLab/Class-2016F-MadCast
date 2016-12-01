@@ -9,12 +9,13 @@
 ## Supported template engines
 
   - [atpl](https://github.com/soywiz/atpl.js)
+  - [bracket](https://github.com/danlevan/bracket-template)
   - [doT.js](https://github.com/olado/doT) [(website)](http://olado.github.io/doT/)
   - [dust (unmaintained)](https://github.com/akdubya/dustjs) [(website)](http://akdubya.github.com/dustjs/)
   - [dustjs-linkedin (maintained fork of dust)](https://github.com/linkedin/dustjs) [(website)](http://linkedin.github.io/dustjs/)
   - [eco](https://github.com/sstephenson/eco)
   - [ect](https://github.com/baryshev/ect) [(website)](http://ectjs.com/)
-  - [ejs](https://github.com/visionmedia/ejs)
+  - [ejs](https://github.com/mde/ejs) [(website)](http://ejs.co/)
   - [haml](https://github.com/visionmedia/haml.js)
   - [haml-coffee](https://github.com/9elements/haml-coffee)
   - [hamlet](https://github.com/gregwebs/hamlet.js)
@@ -27,15 +28,16 @@
   - [JUST](https://github.com/baryshev/just)
   - [liquor](https://github.com/chjj/liquor)
   - [lodash](https://github.com/bestiejs/lodash) [(website)](http://lodash.com/)
+  - [marko](https://github.com/marko-js/marko) [(website)](http://markojs.com)
   - [mote](https://github.com/satchmorun/mote) [(website)](http://satchmorun.github.io/mote/)
   - [mustache](https://github.com/janl/mustache.js)
   - [nunjucks](https://github.com/mozilla/nunjucks) [(website)](https://mozilla.github.io/nunjucks)
-  - [pug (formerly jade)](https://github.com/pugjs/jade) [(website)](http://jade-lang.com/)
+  - [pug (formerly jade)](https://github.com/pugjs/pug) [(website)](http://jade-lang.com/)
   - [QEJS](https://github.com/jepso/QEJS)
   - [ractive](https://github.com/Rich-Harris/Ractive)
   - [react](https://github.com/facebook/react)
   - [slm](https://github.com/slm-lang/slm)
-  - [swig](https://github.com/paularmstrong/swig) [(website)](http://paularmstrong.github.com/swig/)
+  - [swig (unmaintained)](https://github.com/paularmstrong/swig)
   - [templayed](http://archan937.github.com/templayed.js/)
   - [twig](https://github.com/justjohn/twig.js)
   - [liquid](https://github.com/leizongmin/tinyliquid) [(website)](http://liquidmarkup.org/)
@@ -166,6 +168,7 @@ cons.requires.nunjucks.addFilter('foo', function () {
 
 ## Notes
 
+* If you're using Nunjucks, please take a look at the `exports.nunjucks.render` function in `lib.consolidate.js`.  You can pass your own engine/environment via `options.nunjucksEnv`, or if you want to support Express you can pass `options.settings.views`, or if you have another use case, pass `options.nunjucks` (see the code for more insight).
 * You can pass **partials** with `options.partials`
 * For using **template inheritance** with nunjucks, you can pass a loader
   with `options.loader`.
