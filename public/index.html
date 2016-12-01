@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Madcast</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/awesomplete.css"/> 
+    <script type="text/javascript" src="/js/main.js"></script>
+    <script src="/node_modules/angular/angular.js"></script>
+    <script type="text/javascript" src="/js/auto.js"></script>
+    <script type="text/javascript" src="/js/awesomplete.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <script src="/js/jquery.js"> </script>
+    <script src="/js/garlic.js"> </script>
+
+
+    <style>
+        body { 
+            padding-top:50px;
+            background-color: #4abdac;
+        }
+
+        #secondSec {
+            width: 100%;
+            background-color: white;
+            height: 100vh;
+        }
+
+
+        .jumbotron {
+            background-color: #f7b733;
+        }
+
+        #text {
+            opacity: 1;
+            width: 75%;
+            color: white;
+            margin-left: 12.5%
+        }
+
+        #landing {
+            height: 100vh;
+        }
+
+        #story {
+            width: 80%;
+            margin-left: 10%;
+            text-align: center;
+            padding-top: 10%;
+        }
+        a {
+            width: 75%;
+            margin-left: 12.5%;
+            color: white;
+        }
+
+        a:hover {
+            color: #fc4a1a;
+            text-decoration: none;
+        }
+
+        * {
+
+        }
+
+        .sentence {
+            font-size: 40px;
+        }
+        
+        input[type="text"] {
+            padding: 10px;
+            width: 400px;
+            color: #4abdac;
+            height: 75px;
+            background: transparent;
+            border: none;
+            outline: none;
+            border-bottom: solid 2px #4abdac;
+            transition: border 0.3s;
+        }
+
+        button {
+
+            outline: none;
+            
+        }
+
+        #result {
+            height: 100vh;
+        }
+
+        #result img {
+            width: 100%;
+        }
+
+        .endButtons {
+            color: #4abdac;
+            width: 75%;
+            margin-left: 12.5%;
+        }
+
+        .endButtons:hover{
+            color: #f7b733;
+        }
+        #archetype{
+            display: block;
+            width: 75%;
+            margin-left: auto;
+            margin-right: auto 
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+     <div id = "landing">
+        <div class="jumbotron">
+            <div id = "text">
+
+            <h1 class="display-3">Hello, and welcome to Madcast!</h1>
+            <p class="lead">This is a simple project designed to provide you with an enjoyable way of telling the world <em> how </em> you enjoy your favorite podcasts, and why.</p>
+            <hr class="my-2">
+            <p>Wanna figure out what kind of Podcast Lister you are? Let's begin!</p>
+            </div>
+        </div>
+
+        <h1> <a href = "#story"> Let's begin! </a> </h1>
+
+    </div>
+
+    <div id = "secondSec">
+    <div id = "story">
+    <form  method="POST">
+
+            <div id = "sentenceOne">
+                    <p class = "sentence"> 
+                        I always listen to
+                    
+                    <input type = "text" placeholder = "Podcast" class="awesomplete" list="mylist" />
+                        <datalist id="mylist">
+                            <option>Bodega Boys</option>
+                            <option>This American Life</option>
+                            <option>Serial</option>
+                            <option>I'm With Her (RIP) </option>
+                            <option>2 Dope Queens</option>
+                            <option>How did this get made?</option>
+                            <option>RadioLab</option>
+                            <option>TED Radio Hour</option>
+                            <option>Undone</option>
+                            <option>Dial Up Podcast</option>
+                        </datalist>       
+
+                        when I am
+                    
+                    <input type = "text" class="awesomplete" placeholder = "Activity"list="activities" />
+                        <datalist id="activities">
+                            <option>Cleaning</option>
+                            <option>Working out / Exercising</option>
+                            <option>Shopping</option>
+                            <option>Running</option>
+                            <option>Studying</option>
+                            <option>Relaxing</option>
+                            <option>Cooking</option>
+                            <option>Transportation / Driving</option>
+                        </datalist>  
+                     
+                        because it is always
+                    
+                    <input type = "text" class="awesomplete" list="moods" placeholder="Feeling" />
+                        <datalist id="moods">
+                            <option>Sad</option>
+                            <option>Funny</option>
+                            <option>Serious</option>
+                            <option>Informative</option>
+                            <option>Boring</option>
+                            <option>Entertaining</option>
+                            <option>Enlightening</option>
+                        </datalist>  
+                    </p>
+                    <br><br><br>
+                </div>
+
+                
+
+
+
+
+                <!-- SENTENCE TWO -->
+
+
+                <div id = "sentenceSix">
+                    <p class = "sentence"> Those are all of the sentences we have for now! Check back later for more! </p> <br><br><br><br><br><br>
+                </div>
+
+
+
+
+                <div id = "sentenceTwo">
+                        <p class = "sentence"> 
+                            I would say
+                        
+                        <input type = "text" placeholder = "Podcast" class="awesomplete" list="mylist" />
+                            <datalist id="mylist">
+                                <option>Bodega Boys</option>
+                                <option>This American Life</option>
+                                <option>Serial</option>
+                                <option>Guys we Fucked</option>
+                                <option>2 Dope Queens</option>
+                                <option>How did this get made?</option>
+                                <option>RadioLab</option>
+                                <option>TED Radio Hour</option>
+                                <option>Undone</option>
+                                <option>Dial Up Podcast</option>
+                            </datalist>       
+
+                            is
+                        
+                        <input type = "text" placeholder = "Tonal Adjective" class="awesomplete" list="moods" />
+                            <datalist id="moods">
+                                <option>Sad</option>
+                                <option>Funny</option>
+                                <option>Serious</option>
+                                <option>Informative</option>
+                                <option>Entertaining</option>
+                                <option>Enlightening</option>
+                            </datalist>  
+
+                            , at least most of the time.
+                        </p>
+                        <br><br><br>
+                </div>
+
+
+                <div id = "sentenceFive">
+                        <p class = "sentence"> 
+                            I only listen to podcasts whenever I am
+                        
+                        <input type = "text" class="awesomplete" placeholder = "Activity"list="activities" />
+                        <datalist id="activities">
+                            <option>Cleaning</option>
+                            <option>Working out / Exercising</option>
+                            <option>Shopping</option>
+                            <option>Running</option>
+                            <option>Studying</option>
+                            <option>Relaxing</option>
+                            <option>Cooking</option>
+                            <option>Transportation / Driving</option>
+                        </datalist>       
+
+                            but usually I listen to podcasts that are 
+                        
+                        <input type = "text" placeholder = "Tonal Adjective" class="awesomplete" list="moods" />
+                            <datalist id="moods">
+                                <option>Sad</option>
+                                <option>Funny</option>
+                                <option>Serious</option>
+                                <option>Informative</option>
+                                <option>Entertaining</option>
+                                <option>Enlightening</option>
+                            </datalist>  
+
+                            like the podcast 
+
+                            <input type = "text" placeholder = "Podcast" class="awesomplete" list="mylist" />
+                            <datalist id="mylist">
+                                <option>Bodega Boys</option>
+                                <option>This American Life</option>
+                                <option>Serial</option>
+                                <option>Guys we Fucked</option>
+                                <option>2 Dope Queens</option>
+                                <option>How did this get made?</option>
+                                <option>RadioLab</option>
+                                <option>TED Radio Hour</option>
+                                <option>Undone</option>
+                                <option>Dial Up Podcast</option>
+                            </datalist>
+                        </p>
+                        <br><br><br>
+                </div>
+
+                <div id = "sentenceFour">
+                        <p class = "sentence"> 
+                            I always recommend
+                        
+                        <input type = "text" placeholder = "Podcast" class="awesomplete" list="mylist" />
+                            <datalist id="mylist">
+                                <option>Bodega Boys</option>
+                                <option>This American Life</option>
+                                <option>Serial</option>
+                                <option>Guys we Fucked</option>
+                                <option>2 Dope Queens</option>
+                                <option>How did this get made?</option>
+                                <option>RadioLab</option>
+                                <option>TED Radio Hour</option>
+                                <option>Undone</option>
+                                <option>Dial Up Podcast</option>
+                            </datalist>       
+
+                            it's so
+                        
+                        <input type = "text" placeholder = "Tonal Adjective" class="awesomplete" list="moods" />
+                            <datalist id="moods">
+                                <option>Sad</option>
+                                <option>Funny</option>
+                                <option>Serious</option>
+                                <option>Informative</option>
+                                <option>Entertaining</option>
+                                <option>Enlightening</option>
+                            </datalist>  
+                        </p>
+                        <br><br><br>
+                </div>
+
+
+                <div id = "sentenceThree">
+                        <p class = "sentence"> 
+                            I don't get what people like about
+                        
+                        <input type = "text" placeholder = "Podcast" class="awesomplete" list="mylist" />
+                            <datalist id="mylist">
+                                <option>Bodega Boys</option>
+                                <option>This American Life</option>
+                                <option>Serial</option>
+                                <option>Guys we Fucked</option>
+                                <option>2 Dope Queens</option>
+                                <option>How did this get made?</option>
+                                <option>RadioLab</option>
+                                <option>TED Radio Hour</option>
+                                <option>Undone</option>
+                                <option>Dial Up Podcast</option>
+                            </datalist>       
+
+                            it's so
+                        
+                        <input type = "text" placeholder = "Tonal Adjective" class="awesomplete" list="moods" />
+                            <datalist id="moods">
+                                <option>Sad</option>
+                                <option>Funny</option>
+                                <option>Serious</option>
+                                <option>Informative</option>
+                                <option>Entertaining</option>
+                                <option>Enlightening</option>
+                                <option>Boring</option>
+                            </datalist>  
+                        </p>
+                        <br><br><br>
+                </div>
+
+
+                    
+                    <div>
+                            <h1 class = "endButtons" onclick="altGenerateSentence()"> 
+                                    That was cool, lemme fill out another one!
+                            </h1>
+
+                            <a href = "#result"> <h1 class = "endButtons" onclick="gimmeResult()"> 
+                                    Enough, what kind of listener am I?
+                            </h1>
+                            </a>
+                    </div>
+                    </form>
+     </div>
+     </div>
+
+    <div id = "result">
+        <img id = "archetype" src = "/img/colors.gif"/>
+        <img src="" id="myPicture"> 
+
+    </div>
+    
+</body>
+</html>
